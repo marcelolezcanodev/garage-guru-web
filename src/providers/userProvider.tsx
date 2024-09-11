@@ -76,27 +76,54 @@ export const getUsers = async (pagination: {
   
 
 // Función para obtener un usuario por ID
-export const getUserById = async (userId: string) => {
+export const getUserById  = async (pagination: {
+  page: number;
+  pageSize: number;
+}) => {
   try {
-    const response = await axios.get(
-      `${API_URL}/usuarios/${userId}`,
+    const response = await axios.post(
+      `${API_URL}/usuarios`,
+      {
+        paginacion: { pagina: pagination.page, cantidad: pagination.pageSize },
+      },
       getHeaders()
     );
-    return response.data.response.data.usuario;
+    
+    if (response.data.codigo !== 200) {
+      throw new Error(response.data.mensaje || "Error desconocido");
+    }
+    // Devolver tanto los usuarios como los datos de paginación
+    return {
+      usuarios: response.data.response.data.usuarios,
+      paginacion: response.data.response.data.paginacion,
+    };
   } catch (error) {
-    console.error("Error obteniendo el usuario:", error);
+    console.error("Error obteniendo los usuarios:", error);
     throw error;
   }
 };
 
 // Función para actualizar un usuario
-export const updateUser = async (userId: string, updatedData: any) => {
+export const updateUser = async (userData: {
+  nombres: string;
+  apellidos: string;
+  usuario: string;
+  correo: string;
+  rol: string;
+  nroDocumento: string;
+  tipoDocumento: string;
+}) => {
   try {
-    const response = await axios.put(
-      `${API_URL}/usuarios/${userId}`,
-      updatedData,
+    const response = await axios.post(
+      `${API_URL}/usuarios/actualizar`,
+      userData,
       getHeaders()
     );
+
+    if (response.data.codigo !== 200) {
+      throw new Error(response.data.mensaje || "Error desconocido");
+    }
+
     return response.data;
   } catch (error) {
     console.error("Error actualizando el usuario:", error);

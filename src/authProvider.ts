@@ -30,6 +30,7 @@ export const authProvider: AuthProvider = {
         // Almacena el token usando el mismo TOKEN_KEY
         localStorage.setItem(TOKEN_KEY, token);
         localStorage.setItem("username", name);
+        localStorage.setItem("email", email);
         console.log('my_access_token stored: ', token);
 
         // Devuelve el éxito con la redirección
@@ -83,5 +84,23 @@ export const authProvider: AuthProvider = {
   onError: async (error) => {
     console.error(error);
     return { error };
+  },
+
+  forgotPassword: async () => {
+    const token = localStorage.getItem(TOKEN_KEY);  // Usa el mismo TOKEN_KEY
+    const email = localStorage.getItem("email");
+    if (token) {
+      return {
+        success: true,
+      };
+    }
+
+    return {
+      success: false,
+      error: {
+        name: "Register Error",
+        message: "Invalid email",
+      },
+    };
   },
 };
