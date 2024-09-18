@@ -26,8 +26,10 @@ import { ForgotPassword } from "./pages/forgotPassword";
 import { Login } from "./pages/login";
 import { Register } from "./pages/register";
 import { UserList, UserCreate, UserEdit } from "./pages/users";
+import { ActivateUser } from "./pages/activateUser";
 
 function App() {
+
   return (
     <BrowserRouter>
       <RefineKbarProvider>
@@ -83,10 +85,14 @@ function App() {
                       <Route index element={<UserList />} />
                       <Route path="create" element={<UserCreate />}  />
                       <Route path="edit/:id" element={<UserEdit />} />
-                      {/* <Route path="show/:id" element={<BlogPostShow />} /> */}
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
+                  {/* Ruta para la activación de usuario */}
+                  <Route
+                    path="/activate"
+                    element={<ActivateUser />}  // Ruta para activar el usuario
+                  />
                   <Route
                     element={
                       <Authenticated

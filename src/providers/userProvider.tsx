@@ -143,4 +143,30 @@ export const deleteUser = async (userId: string) => {
     console.error("Error eliminando el usuario:", error);
     throw error;
   }
+
+  
+};
+
+// Función para activar un usuario
+export const activateUser = async (activationData: { userKey: string, password: string }) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/activar/usuario`,
+      activationData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (response.data.codigo !== 200) {
+      throw new Error(response.data.mensaje || "Error desconocido en la activación");
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error("Error activando el usuario:", error);
+    throw error;
+  }
 };
